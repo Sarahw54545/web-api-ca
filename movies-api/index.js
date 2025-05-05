@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-// import tasksRouter from './api/tasks';
+import moviesRouter from './api/movies'; 
 import './db';
 // other imports
 import cors from 'cors';
@@ -26,7 +26,8 @@ app.use(cors());
 
 app.use(express.json());
 
-// app.use('/api/tasks', authenticate, tasksRouter);
+// app.use('/api/tasks', authenticate, tasksRouter); FROM TASKY LABS
+app.use('/api/movies', moviesRouter); 
 
 //Users router
 app.use('/api/users', usersRouter);
