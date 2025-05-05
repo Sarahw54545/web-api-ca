@@ -1,6 +1,22 @@
-export const getMovies = (pageNo) => {
+// export const getMovies = (pageNo) => {
+//   return fetch(
+//     `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&page=${pageNo}`
+//   ).then((response) => {
+//     if (!response.ok) {
+//       return response.json().then((error) => {
+//         throw new Error(error.status_message || "Something went wrong");
+//       });
+//     }
+//     return response.json();
+//   })
+//     .catch((error) => {
+//       throw error
+//     });
+// };
+
+export const getMovies = () => {
   return fetch(
-    `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&page=${pageNo}`
+    `http://localhost:8080/api/movies/discover`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
@@ -9,9 +25,9 @@ export const getMovies = (pageNo) => {
     }
     return response.json();
   })
-    .catch((error) => {
+  .catch((error) => {
       throw error
-    });
+  });
 };
 
 export const getMovie = (args) => {
