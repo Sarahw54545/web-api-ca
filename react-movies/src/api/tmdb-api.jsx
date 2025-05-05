@@ -1,22 +1,3 @@
-// OLD ROUTE
-
-// export const getMovies = (pageNo) => {
-//   return fetch(
-//     `https://api.themoviedb.org/3/discover/movie?api_key=${import.meta.env.VITE_TMDB_KEY}&page=${pageNo}`
-//   ).then((response) => {
-//     if (!response.ok) {
-//       return response.json().then((error) => {
-//         throw new Error(error.status_message || "Something went wrong");
-//       });
-//     }
-//     return response.json();
-//   })
-//     .catch((error) => {
-//       throw error
-//     });
-// };
-
-// NOTE: PAGINATION IS CURRENTLY BROKEN DUE TO PAGENO NOT BEING PASSED INTO LOCAL API CALL
 export const getMovies = (pageNo) => {
   return fetch(
     `http://localhost:8080/api/movies/discover?page=${pageNo}`
