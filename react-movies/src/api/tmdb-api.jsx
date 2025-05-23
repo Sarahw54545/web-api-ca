@@ -140,7 +140,7 @@ export const getPerson = (args) => {
   const { person_id } = idPart;
 
   return fetch(
-    `https://api.themoviedb.org/3/person/${person_id}?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    `http://localhost:8080/api/movies/person/${person_id}`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
