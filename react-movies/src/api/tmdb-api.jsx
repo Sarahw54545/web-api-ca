@@ -156,7 +156,7 @@ export const getPerson = (args) => {
 
 export const getPopPeople = (pageNo) => {
   return fetch(
-    `https://api.themoviedb.org/3/person/popular?api_key=${import.meta.env.VITE_TMDB_KEY}&page=${pageNo}`
+    `http://localhost:8080/api/movies/popPeople?page=${pageNo}`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
