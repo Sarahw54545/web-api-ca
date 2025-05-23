@@ -13,7 +13,6 @@ export const getMovies = async (pageNo) => {
 };
 
 export const getMovie = async (id) => {
-
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.TMDB_KEY}`
   );
@@ -36,3 +35,15 @@ if (!response.ok) {
 
     return await response.json();
 };
+
+export const getMovieImgs = async (id) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/images?api_key=${process.env.TMDB_KEY}`
+  );
+  
+if (!response.ok) {
+        throw new Error(response.json().message);
+    }
+
+    return await response.json();
+  };
