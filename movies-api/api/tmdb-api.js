@@ -119,3 +119,15 @@ if (!response.ok) {
 
     return await response.json();
 };
+
+  export const getPersonsCredits = async (person_id) => {
+  const response = await fetch(
+     `https://api.themoviedb.org/3/person/${person_id}/movie_credits?api_key=${process.env.TMDB_KEY}`
+  );
+  
+if (!response.ok) {
+        throw new Error(response.json().message);
+    }
+
+    return await response.json();
+  };
