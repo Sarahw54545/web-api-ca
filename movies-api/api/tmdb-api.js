@@ -83,3 +83,15 @@ if (!response.ok) {
 
     return await response.json();
   };
+
+    export const getNowPlaying = async (pageNo) => {
+    const response = await fetch(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${process.env.TMDB_KEY}&page=${pageNo}`
+    );
+
+    if (!response.ok) {
+        throw new Error(response.json().message);
+    }
+
+    return await response.json();
+};

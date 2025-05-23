@@ -121,7 +121,7 @@ export const getCredits = (args) => {
 
 export const getNowPlaying = (pageNo) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/now_playing?api_key=${import.meta.env.VITE_TMDB_KEY}&page=${pageNo}`
+    `http://localhost:8080/api/movies/nowPlaying?page=${pageNo}`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
