@@ -87,7 +87,7 @@ export const getMovieReviews = ({ queryKey }) => {
 
 export const getUpcomingMovies = (pageNo) => {
   return fetch(
-    `https://api.themoviedb.org/3/movie/upcoming?api_key=${import.meta.env.VITE_TMDB_KEY}&page=${pageNo}`
+   `http://localhost:8080/api/movies/upcoming?page=${pageNo}`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
@@ -105,7 +105,7 @@ export const getCredits = (args) => {
   const [, idPart] = args.queryKey;
   const { movie_id } = idPart;
   return fetch(
-    `https://api.themoviedb.org/3/movie/${movie_id}/credits?api_key=${import.meta.env.VITE_TMDB_KEY}`
+    `http://localhost:8080/api/movies/movie/${movie_id}/credits`
   ).then((response) => {
     if (!response.ok) {
       return response.json().then((error) => {
