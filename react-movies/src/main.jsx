@@ -11,6 +11,8 @@ import MovieReviewPage from "./pages/movieReviewPage";
 import PersonPage from "./pages/personPage";
 import PopularPeoplePage from "./pages/popularPeople"
 import SiteHeader from './components/siteHeader';
+import SignupPage from './pages/signupPage';
+import LoginPage from './pages/loginPage';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import MoviesContextProvider from "./contexts/moviesContext";
@@ -46,6 +48,8 @@ const App = () => {
             <Route path="/reviews/form" element={<AddMovieReviewPage />} />
             <Route path="/people/:id" element={<PersonPage />} />
             <Route path="/people/popular" element={<PopularPeoplePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
           </Routes>
         </MoviesContextProvider>
       </BrowserRouter>

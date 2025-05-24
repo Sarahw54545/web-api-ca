@@ -20,16 +20,18 @@ const SiteHeader = () => {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  
+
   const navigate = useNavigate();
 
   const menuOptions = [
     { label: "Home", path: "/" },
     { label: "Now Playing", path: "/movies/nowPlaying" },
     { label: "Upcoming", path: "/movies/upcoming" },
+    { label: "People", path: "/people/popular" },
+
+    // User Authenticated Only Routes
     { label: "Favorites", path: "/movies/favorites" },
     { label: "Watchlist", path: "/movies/watchlist" },
-    { label: "People", path: "/people/popular" },
   ];
 
   const handleMenuSelect = (pageURL) => {
@@ -45,61 +47,79 @@ const SiteHeader = () => {
     <>
       <AppBar position="fixed" color="primary">
         <Toolbar>
+          {/* Header */}
           <Typography variant="h4" sx={{ flexGrow: 1 }}>
-            <Link to={"/"} style= {{textDecoration: "none", color: "white"}}>TMDB Client</Link>
+            <Link to={"/"} style={{ textDecoration: "none", color: "white" }}>TMDB Client</Link>
           </Typography>
+
+          {/* Message */}
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             All you ever wanted to know about Movies!
           </Typography>
-            {isMobile ? (
-              <>
-                <IconButton
-                  aria-label="menu"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={open}
-                  onClose={() => setAnchorEl(null)}
-                >
-                  {menuOptions.map((opt) => (
-                    <MenuItem
-                      key={opt.label}
-                      onClick={() => handleMenuSelect(opt.path)}
-                    >
-                      {opt.label}
-                    </MenuItem>
-                  ))}
-                </Menu>
-              </>
-            ) : (
-              <>
+          
+          {/* If Mobile put options in Hamburger Menu */}
+          {isMobile ? (
+            <>
+              <IconButton
+                aria-label="menu"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={open}
+                onClose={() => setAnchorEl(null)}
+              >
                 {menuOptions.map((opt) => (
-                  <Button
+                  <MenuItem
                     key={opt.label}
-                    color="inherit"
                     onClick={() => handleMenuSelect(opt.path)}
                   >
                     {opt.label}
-                  </Button>
+                  </MenuItem>
                 ))}
-              </>
-            )}
+              </Menu>
+            </>
+          ) : (
+            
+            <>
+              {menuOptions.map((opt) => (
+                <Button
+                  key={opt.label}
+                  color="inherit"
+                  onClick={() => handleMenuSelect(opt.path)}
+                >
+                  {opt.label}
+                </Button>
+              ))}
+            </>
+          )}
+
+          {/* Log In Button */}
+          <Typography variant="h6" sx={{ paddingLeft: 3 }}>
+            <Link to={"/login"} style={{ textDecoration: "none", color: "white" }}>Log In</Link>
+          </Typography>
+
+          {/* Sign Up Button */}
+          <Typography variant="h6" sx={{ paddingLeft: 3 }}>
+            <Link to={"/signup"} style={{ textDecoration: "none", color: "white" }}>Sign Up</Link>
+          </Typography>
+
         </Toolbar>
       </AppBar>
       <Offset />
