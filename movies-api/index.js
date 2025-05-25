@@ -5,6 +5,7 @@ import './db';
 // other imports
 import cors from 'cors';
 import usersRouter from './api/users';
+import userDataRouter from './api/userData';
 import authenticate from './authenticate';
 
 dotenv.config();
@@ -27,10 +28,15 @@ app.use(cors());
 app.use(express.json());
 
 // app.use('/api/tasks', authenticate, tasksRouter); FROM TASKY LABS
+
+//TMDB Movies Router
 app.use('/api/movies', moviesRouter);
 
 //Users router
 app.use('/api/users', usersRouter);
+
+//UserData Router
+app.use('/api/userData', authenticate, userDataRouter);
 
 app.use(errHandler);
 

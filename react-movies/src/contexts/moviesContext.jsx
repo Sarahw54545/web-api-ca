@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getFavorites as fetchFavoritesAPI, addToFavorites as addToFavoritesAPI, deleteFromFavorites as deleteFromFavoritesAPI, getWatchlist as fetchWatchlistAPI, addToWatchlist as addToWatchlistAPI, deleteFromWatchlist as deleteFromWatchlistAPI } from "../api/user-api";
 
 export const MoviesContext = React.createContext(null);
 
@@ -7,42 +8,63 @@ const MoviesContextProvider = (props) => {
   const [myReviews, setMyReviews] = useState({})
   const [watchlist, setWatchlist] = useState([])
 
-  const addToFavorites = (movie) => {
-    let newFavorites = [];
-    if (!favorites.includes(movie.id)) {
-      newFavorites = [...favorites, movie.id];
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const favs = await fetchFavoritesAPI();
+      const watch = await fetchWatchlistAPI();
+      setFavorites(favs.favorites || []);
+      setWatchlist(watch.watchlist || []);
+    } catch (err) {
+      console.error("Failed to Fetch User Data", err);
     }
-    else {
-      newFavorites = [...favorites];
-    }
-    setFavorites(newFavorites)
   };
 
-  const removeFromFavorites = (movie) => {
-    setFavorites(favorites.filter(
-      (mId) => mId !== movie.id
-    ))
+  fetchData();
+}, []);
+
+  const addToFavorites = async (movie) => {
+    if (!favorites.includes(movie.id)) {
+      try {
+        await addToFavoritesAPI({ movieId: movie.id });
+        setFavorites((prev) => [...prev, movie.id]);
+      } catch (err) {
+        console.error("Error adding to favorites", err);
+      }
+    }
+  };
+
+  const removeFromFavorites = async (movie) => {
+    try {
+      await deleteFromFavoritesAPI(movie.id);
+      setFavorites((prev) => prev.filter((mId) => mId !== movie.id));
+    } catch (err) {
+      console.error("Error Removing from Favorites", err);
+    }
   };
 
   const addReview = (movie, review) => {
     setMyReviews({ ...myReviews, [movie.id]: review })
   };
 
-  const addToWatchlist = (movie) => {
-    let newWatchlist = [];
+  const addToWatchlist = async (movie) => {
     if (!watchlist.includes(movie.id)) {
-      newWatchlist = [...watchlist, movie.id];
+      try {
+        await addToWatchlistAPI({ movieId: movie.id });
+        setWatchlist((prev) => [...prev, movie.id]);
+      } catch (err) {
+        console.error("Error Adding to Watchlist", err);
+      }
     }
-    else {
-      newWatchlist = [...watchlist];
-    }
-    setWatchlist(newWatchlist)
   };
 
-  const removeFromWatchlist = (movie) => {
-    setWatchlist(watchlist.filter(
-      (mId) => mId !== movie.id
-    ))
+  const removeFromWatchlist = async (movie) => {
+    try {
+      await deleteFromWatchlistAPI(movie.id);
+      setWatchlist((prev) => prev.filter((mId) => mId !== movie.id));
+    } catch (err) {
+      console.error("Error Removing from Watchlist", err);
+    }
   };
 
   return (
