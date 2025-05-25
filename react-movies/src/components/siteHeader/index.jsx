@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -11,6 +11,7 @@ import { useNavigate, Link } from "react-router";
 import { styled } from '@mui/material/styles';
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { AuthContext } from "../../contexts/authContext";
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -21,6 +22,7 @@ const SiteHeader = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
+  const context = useContext(AuthContext);
   const navigate = useNavigate();
 
   const menuOptions = [
@@ -28,7 +30,9 @@ const SiteHeader = () => {
     { label: "Now Playing", path: "/movies/nowPlaying" },
     { label: "Upcoming", path: "/movies/upcoming" },
     { label: "People", path: "/people/popular" },
+  ];
 
+  const protectedMenuOptions = [
     // User Authenticated Only Routes
     { label: "Favorites", path: "/movies/favorites" },
     { label: "Watchlist", path: "/movies/watchlist" },
@@ -52,11 +56,20 @@ const SiteHeader = () => {
             <Link to={"/"} style={{ textDecoration: "none", color: "white" }}>TMDB Client</Link>
           </Typography>
 
-          {/* Message */}
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            All you ever wanted to know about Movies!
-          </Typography>
-          
+          {context.isAuthenticated ? (
+            <>
+              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                Welcome to the TMDB Client {context.userName}!
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                All you ever wanted to know about Movies!
+              </Typography>
+            </>
+          )}
+
           {/* If Mobile put options in Hamburger Menu */}
           {isMobile ? (
             <>
@@ -96,29 +109,69 @@ const SiteHeader = () => {
               </Menu>
             </>
           ) : (
-            
+
             <>
-              {menuOptions.map((opt) => (
-                <Button
-                  key={opt.label}
-                  color="inherit"
-                  onClick={() => handleMenuSelect(opt.path)}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+              {context.isAuthenticated ? (
+                <>
+                  {menuOptions.map((opt) => (
+                    <Button
+                      key={opt.label}
+                      color="inherit"
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </Button>
+                  ))}
+
+                  {protectedMenuOptions.map((opt) => (
+                    <Button
+                      key={opt.label}
+                      color="inherit"
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </Button>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {menuOptions.map((opt) => (
+                    <Button
+                      key={opt.label}
+                      color="inherit"
+                      onClick={() => handleMenuSelect(opt.path)}
+                    >
+                      {opt.label}
+                    </Button>
+                  ))}
+                </>
+              )}
             </>
           )}
 
-          {/* Log In Button */}
-          <Typography variant="h6" sx={{ paddingLeft: 3 }}>
-            <Link to={"/login"} style={{ textDecoration: "none", color: "white" }}>Log In</Link>
-          </Typography>
+          {context.isAuthenticated ? (
+            <>
+              <Typography
+                variant="h6"
+                sx={{ paddingLeft: 3, cursor: "pointer" }}
+                onClick={() => context.signout()}
+              >
+                <span style={{ textDecoration: "none", color: "white" }}>Sign Out</span>
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography variant="h6" sx={{ paddingLeft: 3 }}>
+                <Link to={"/login"} style={{ textDecoration: "none", color: "white" }}>Log In</Link>
+              </Typography>
 
-          {/* Sign Up Button */}
-          <Typography variant="h6" sx={{ paddingLeft: 3 }}>
-            <Link to={"/signup"} style={{ textDecoration: "none", color: "white" }}>Sign Up</Link>
-          </Typography>
+              <Typography variant="h6" sx={{ paddingLeft: 3 }}>
+                <Link to={"/signup"} style={{ textDecoration: "none", color: "white" }}>Sign Up</Link>
+              </Typography>
+            </>
+          )}
+
+
 
         </Toolbar>
       </AppBar>
